@@ -1,19 +1,30 @@
 from fastapi import FastAPI
 
+from app.core.config import settings
+from app.routes.analysis import router as analysis_router
+
+
 app = FastAPI(
-    title="Datalens API",
-    description="API para análise de ficheiros CSV",
-    version = "1.0.0"
+    title=settings.APP_NAME,
+    version=settings.APP_VERSION
 )
 
+
+app.include_router(
+    analysis_router,
+    prefix=settings.API_PREFIX
+)
+
+
 @app.get("/")
-def home(): 
+def home():
     return {
-        "message": "Hello, Guana!"
+        "message": "Welcome to DataLens API"
     }
-    
+
+
 @app.get("/health")
 def health_check():
     return {
-        "status": "ok"
+        "status": "healthy"
     }
