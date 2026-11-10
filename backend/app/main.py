@@ -12,7 +12,7 @@ app = FastAPI(
 
 app.include_router(
     analysis_router,
-    prefix=settings.API_PREFIX
+    prefix=settings.APP_PREFIX
 )
 
 
