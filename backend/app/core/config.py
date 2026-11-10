@@ -1,12 +1,18 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
+
     APP_NAME: str = "DataLens API"
-    APP_DESCRIPTION: str = "API para Análise de ficheiros CSV"
     APP_VERSION: str = "1.0.0"
-    APP_PREFIX: str = "/api"
-    
-    class Config:
-        env_file = ".env"
+    API_PREFIX: str = "/api"
+
+    DATABASE_URL: str
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8"
+    )
+
 
 settings = Settings()
