@@ -9,8 +9,6 @@ app = FastAPI(
     version=settings.APP_VERSION
 )
 
-Base.metadata.create_all(bind=engine)
-
 app.include_router(
     analysis_router,
     prefix=settings.API_PREFIX
