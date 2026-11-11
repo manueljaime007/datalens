@@ -7,15 +7,29 @@ class AnalysisService :
         self.db = db
     
     def create_analysis(self, data):
-        
-        analisys = Analysis(
-            name=data.name,
-            description=data.description
+        analysis = Analysis(
+            name = data.name,
+            description = data.description
         )
-
-        self.db.add(analisys)
+        self.db.add(analysis)
         self.db.commit()
-        self.db.refresh(instance=analisys)
+        self.db.refresh(analysis)
         
-        return analisys
+        return analysis
+        
+    def get_analyses(self):
+        return self.db.query(Analysis).all() 
     
+    def get_analysis_by_id(self, id: int):
+        return self.db.get(Analysis, id)
+    
+    def delete_analysis_by_id(self, id: int):
+        analysis = self.db.get(Analysis, id)
+        
+        if analysis is None: 
+            return False
+
+        self.db.delete(analysis)
+        self.db.commit()
+        
+        return True
