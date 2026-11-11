@@ -99,7 +99,9 @@ def delete_analyses_bulk_endpoint(
     service = AnalysisService(db)
     unique_ids = list(dict.fromkeys(ids))
 
-    if any(service.get_analysis_by_id(analysis_id) is None for analysis_id in unique_ids):
+    if any(
+        service.get_analysis_by_id(analysis_id) is None for analysis_id in unique_ids
+    ):
         raise HTTPException(
             status_code=404,
             detail="Registo de análise não encontrado."
@@ -118,19 +120,25 @@ def delete_analyses_bulk_endpoint(
     return {"deleted": len(unique_ids)}
 
 
-@router.delete("/{id}", status_code=204)
-def delete_analysis_by_id_endpoint(
-    id: int,
-    db: Session = Depends(get_db)
+@router.delete("/bulk")
+def delete_analyses_bulk_endpoint(
+    ids: list[int] = Body(..., embed=True),
+    db: Session = Depends(get_db),
 ):
     service = AnalysisService(db)
-
-    deleted = service.delete_analysis_by_id(id)
-
-    if not deleted:
+    try:
+        deleted_count = service.delete_analyses_bulk(ids)
+        if deleted_count is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Registo de análise não encontrado.",
+            )
+    except SQLAlchemyError:
+        db.rollback()
         raise HTTPException(
-            status_code=404,
-            detail="Registo de análise não encontrado."
+            status_code=500,
+            detail="Não foi possível eliminar as análises.",
         )
 
-    return None
+    return {"deleted": deleted_count}
+

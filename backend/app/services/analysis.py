@@ -37,3 +37,22 @@ class AnalysisService :
         self.db.commit()
         
         return True
+
+    def delete_analyses_bulk(self, ids: list[int]):
+        unique_ids = list(dict.fromkeys(ids))
+        analyses = (
+            self.db.query(Analysis)
+            .filter(Analysis.id.in_(unique_ids))
+            .all()
+        )
+
+        if len(analyses) != len(unique_ids):
+            return None
+
+        for analysis in analyses:
+            self.db.delete(analysis)
+
+        self.db.commit()
+        return len(unique_ids)
+
+
