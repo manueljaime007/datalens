@@ -6,10 +6,10 @@ class AnalysisService :
     def __init__(self, db: Session):
         self.db = db
     
-    def create_analysis(self, data):
+    def create_analysis(self, filename: str, data: dict):
         analysis = Analysis(
-            name = data.name,
-            description = data.description
+            filename = filename,
+            **data
         )
         self.db.add(analysis)
         self.db.commit()

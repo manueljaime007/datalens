@@ -4,6 +4,9 @@ from pydantic import BaseModel, Field, ConfigDict
 
 
 class AnalysisCreate(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
+    id: int
     filename: str
     total_records: int
     total_quantity: int
@@ -11,8 +14,7 @@ class AnalysisCreate(BaseModel):
     average_value: Decimal
     revenue_by_category: list[dict] = []
     top_products: list[dict] = []
-    
-    description: str | None = None
+    created_at: datetime
 class AnalysisResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     
