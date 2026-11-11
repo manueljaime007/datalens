@@ -18,8 +18,12 @@ class AnalysisService :
         return analysis
         
     def get_analyses(self):
-        return self.db.query(Analysis).all() 
-    
+        return (
+            self.db.query(Analysis)
+            .order_by(Analysis.created_at.desc())
+            .all()
+        )
+        
     def get_analysis_by_id(self, id: int):
         return self.db.get(Analysis, id)
     
