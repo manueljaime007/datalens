@@ -3,6 +3,8 @@ from fastapi import APIRouter, Body, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
+from app.core.config import settings
+
 from app.database.connection import get_db
 from app.schemas.analysis import AnalysisResponse
 from app.services.analysis import AnalysisService
@@ -13,7 +15,7 @@ router = APIRouter(
     tags=["Analyses"]
 )
 
-MAX_FILE_SIZE = 5 * 1024 * 1024
+MAX_FILE_SIZE = settings.max_upload_bytes
 
 
 @router.post("/upload", response_model=AnalysisResponse)
@@ -90,8 +92,7 @@ def get_analysis_by_id_endpoint(
 
     return analysis
 
-
-@router.delete("/bulk")
+@router.delete("/bulk", status_code=204)
 def delete_analyses_bulk_endpoint(
     ids: list[int] = Body(..., embed=True),
     db: Session = Depends(get_db)
@@ -117,18 +118,18 @@ def delete_analyses_bulk_endpoint(
             detail="Não foi possível eliminar as análises."
         )
 
-    return {"deleted": len(unique_ids)}
+    return None
 
 
-@router.delete("/bulk")
-def delete_analyses_bulk_endpoint(
-    ids: list[int] = Body(..., embed=True),
+@router.delete("/{id}", status_code=204)
+def delete_analysis_by_id_endpoint(
+    id: int,
     db: Session = Depends(get_db),
 ):
     service = AnalysisService(db)
     try:
-        deleted_count = service.delete_analyses_bulk(ids)
-        if deleted_count is None:
+        deleted = service.delete_analysis_by_id(id)
+        if not deleted:
             raise HTTPException(
                 status_code=404,
                 detail="Registo de análise não encontrado.",
@@ -140,5 +141,6 @@ def delete_analyses_bulk_endpoint(
             detail="Não foi possível eliminar as análises.",
         )
 
-    return {"deleted": deleted_count}
+    return None
+
 
