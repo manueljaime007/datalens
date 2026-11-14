@@ -65,9 +65,10 @@ The example produces 6 records, a total quantity of 29, total revenue of 811,000
 
 In the `api` directory, install the dependencies and run the tests:
 
+<!-- # pytest -->
+
 ```bash
 pip install -r requirements.txt
-pytest
 ```
 
 The analyzer tests verify validation and calculations without HTTP or a database. Endpoint tests require the test database configuration defined by the project.
@@ -79,6 +80,8 @@ The analyzer tests verify validation and calculations without HTTP or a database
 | `POST` | `/api/analyses` | Accepts the `file` field in `multipart/form-data`, validates it, calculates, and saves the analysis. | `201` |
 | `GET` | `/api/analyses` | Lists analyses from newest to oldest. | `200` |
 | `GET` | `/api/analyses/{id}` | Returns a complete analysis. | `200` |
+| `DELETE` | `/api/analyses/bulk` | Delete a set of analyses resources. | `204` |
+| `DELETE` | `/api/analyses/{id}` | Delete a complete analysis. | `204` |
 | `GET` | `/health` | Health check. | `200` |
 | `GET` | `/docs` | FastAPI OpenAPI documentation. | `200` |
 
@@ -101,14 +104,14 @@ web/       Next.js application and interface components
 samples/   Sample CSV and invalid files
 ```
 
-## Privacy
+<!-- ## Privacy
 
-Do not upload sensitive or personal information. See the application's [Terms](./web/app/termos/page.tsx) and [Privacy](./web/app/privacidade/page.tsx) pages for information about data handling and retention.
+Do not upload sensitive or personal information. See the application's [Terms](./web/app/termos/page.tsx) and [Privacy](./web/app/privacidade/page.tsx) pages for information about data handling and retention. -->
 
 ## Scope and Roadmap
 
 Machine learning, forecasting, configurable dashboards, formats other than CSV, PDF export, accounts, permissions, and background processing are out of scope for now.
 
-## License
+<!-- ## License
 
-See [`LICENSE`](./LICENSE).
+See [`LICENSE`](./LICENSE). -->
