@@ -1,13 +1,10 @@
-
 import re
 import pandas as pd
 
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 
-
 class CSVAnalyzer:
-
     REQUIRED_COLUMNS: list[str] = [
         "date",
         "product",
