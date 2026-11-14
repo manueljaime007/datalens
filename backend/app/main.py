@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.routes.analysis import router as analysis_router
@@ -9,6 +10,13 @@ app = FastAPI(
     version=settings.APP_VERSION
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(
     analysis_router,
     prefix=settings.API_PREFIX
@@ -17,7 +25,10 @@ app.include_router(
 @app.get("/")
 def home():
     return {
-        "message": "Welcome to DataLens API"
+        "message": "Welcome to DataLens API",
+        "routes": {
+            "documentation": "/docs"
+        }
     }
 
 @app.get("/health")
