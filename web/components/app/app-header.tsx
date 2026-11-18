@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bell, ChartLine, CircleHelp, FileUp, User } from "lucide-react";
 
-const links = [
-  { href: "/dashboard", label: "Dashboard" },
+const links: { href: string; label: string; also?: string[] }[] = [
+  { href: "/dashboard", label: "Dashboard", also: ["/analysis"] },
   { href: "/historico", label: "Histórico" },
   { href: "/documentacao", label: "Documentação" },
   { href: "/ajuda", label: "Ajuda" },
@@ -28,13 +28,9 @@ export function AppHeader() {
             </span>
           </Link>
 
-          <nav
-            className="hidden items-center gap-1 text-sm font-medium lg:flex"
-            aria-label="Principal"
-          >
-            {links.map(({ href, label }) => {
-              const active =
-                pathname === href || pathname.startsWith(`${href}/`);
+          <nav className="hidden items-center gap-1 text-sm font-medium lg:flex" aria-label="Principal">
+            {links.map(({ href, label, also = [] }) => {
+              const active = [href, ...also].some((p) => pathname === p || pathname.startsWith(`${p}/`));
               return (
                 <Link
                   key={href}
@@ -64,18 +60,10 @@ export function AppHeader() {
             </span>
           </Link>
 
-          <button
-            type="button"
-            aria-label="Ajuda"
-            className="hidden rounded-full p-2 text-muted-foreground hover:bg-secondary hover:text-foreground sm:block"
-          >
+          <button type="button" aria-label="Ajuda" className="hidden rounded-full p-2 text-muted-foreground hover:bg-secondary hover:text-foreground sm:block">
             <CircleHelp className="size-5" />
           </button>
-          <button
-            type="button"
-            aria-label="Notificações"
-            className="relative hidden rounded-full p-2 text-muted-foreground hover:bg-secondary hover:text-foreground sm:block"
-          >
+          <button type="button" aria-label="Notificações" className="relative hidden rounded-full p-2 text-muted-foreground hover:bg-secondary hover:text-foreground sm:block">
             <Bell className="size-5" />
             <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-primary" />
           </button>
