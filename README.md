@@ -104,14 +104,8 @@ web/       Next.js application and interface components
 samples/   Sample CSV and invalid files
 ```
 
-<!-- ## Privacy
-
-Do not upload sensitive or personal information. See the application's [Terms](./web/app/termos/page.tsx) and [Privacy](./web/app/privacidade/page.tsx) pages for information about data handling and retention. -->
-
 ## Scope and Roadmap
 
 Machine learning, forecasting, configurable dashboards, formats other than CSV, PDF export, accounts, permissions, and background processing are out of scope for now.
 
-<!-- ## License
 
-See [`LICENSE`](./LICENSE). -->
