@@ -260,7 +260,7 @@ function Header() {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             type="button"
             aria-label="Alternar tema"
@@ -268,9 +268,62 @@ function Header() {
           >
             <Moon className="size-5" />
           </button>
-          <PrimaryButton href="/analisar" size="sm">
-            Começar a analisar
-          </PrimaryButton>
+          <div className="hidden sm:block">
+            <PrimaryButton href="/analisar" size="sm">
+              Começar a analisar
+            </PrimaryButton>
+          </div>
+
+          <details className="relative md:hidden">
+            <summary
+              aria-label="Abrir menu"
+              className="flex size-9 cursor-pointer list-none items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                className="size-5"
+              >
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </summary>
+            <nav className="absolute right-0 top-12 w-64 rounded-2xl border border-border bg-background p-2 shadow-lg">
+              <Link
+                href="#produto"
+                className="block rounded-xl px-4 py-3 text-sm font-medium transition-colors hover:bg-secondary"
+              >
+                Produto
+              </Link>
+              <Link
+                href="#funcionalidades"
+                className="block rounded-xl px-4 py-3 text-sm font-medium transition-colors hover:bg-secondary"
+              >
+                Funcionalidades
+              </Link>
+              <Link
+                href="#changelog"
+                className="block rounded-xl px-4 py-3 text-sm font-medium transition-colors hover:bg-secondary"
+              >
+                Changelog
+              </Link>
+              <Link
+                href="#termos"
+                className="block rounded-xl px-4 py-3 text-sm font-medium transition-colors hover:bg-secondary"
+              >
+                Termos
+              </Link>
+              <Link
+                href="/analisar"
+                className="mt-2 block rounded-xl bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground sm:hidden"
+              >
+                Começar a analisar
+              </Link>
+            </nav>
+          </details>
         </div>
       </div>
     </header>
@@ -315,7 +368,7 @@ function Hero() {
   return (
     <section
       id="produto"
-      className="bg-dots border-b border-border/60 pt-20 sm:pt-28"
+      className="bg-dots border-b border-border/60 pt-20 sm:pt-28 bg-[url('/land_bg.png')]"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
@@ -751,12 +804,12 @@ function Steps() {
 
 function FinalCta() {
   return (
-    <section className="bg-dots bg-dark-section py-20 text-dark-section-foreground sm:py-28">
+    <section className="bg-black/95 bg-[url('/land_bg.png')] bg-dots bg-dark-section py-20 text-dark-section-foreground sm:py-28">
       <div className="mx-auto flex max-w-3xl flex-col items-center px-4 text-center sm:px-6">
-        <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] font-medium tracking-wide uppercase">
+        <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] text-white font-medium tracking-wide uppercase">
           Pronto para começar?
         </span>
-        <h2 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tighter text-balance sm:text-6xl">
+        <h2 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tighter text-balance sm:text-6xl text-white">
           Os seus dados têm histórias para contar.
         </h2>
         <p className="mt-6 max-w-xl text-white/60 text-balance">
