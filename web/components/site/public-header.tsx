@@ -50,7 +50,7 @@ export function PublicHeader() {
             Entrar
           </Link> */}
           <Link
-            href="/analisar"
+            href="/analyses/new"
             className="inline-flex items-center gap-3 rounded-full bg-primary py-1.5 pr-1.5 pl-4 text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/30 transition-transform hover:scale-[1.02]"
           >
             Começar a analisar

@@ -24,7 +24,7 @@ export function Hero() {
           </p>
 
           <div className="mt-8">
-            <PrimaryButton href="/analisar">
+            <PrimaryButton href="/analyses/new">
               Começar gratuitamente
             </PrimaryButton>
           </div>

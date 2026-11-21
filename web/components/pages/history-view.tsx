@@ -117,7 +117,7 @@ export function HistoryView() {
             </span>
           </button>
           <Link
-            href="/analisar"
+            href="/analyses/new"
             className="inline-flex items-center gap-3 rounded-full bg-primary py-1.5 pr-1.5 pl-5 text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/30 transition-transform hover:scale-[1.02]"
           >
             Nova análise
@@ -511,7 +511,7 @@ function EmptyState({ hasData }: { hasData: boolean }) {
       </p>
       {!hasData && (
         <Link
-          href="/analisar"
+          href="/analyses/new"
           className="mt-6 inline-flex items-center gap-3 rounded-full bg-primary py-1.5 pr-1.5 pl-5 text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/30"
         >
           Carregar CSV

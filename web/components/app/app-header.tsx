@@ -6,9 +6,7 @@ import { Bell, ChartLine, CircleHelp, FileUp, User } from "lucide-react";
 
 const links: { href: string; label: string; also?: string[] }[] = [
   { href: "/dashboard", label: "Dashboard", also: ["/analysis"] },
-  { href: "/historico", label: "Histórico" },
-  { href: "/documentacao", label: "Documentação" },
-  { href: "/ajuda", label: "Ajuda" },
+  { href: "/history", label: "Histórico" },
 ];
 
 export function AppHeader() {
@@ -19,18 +17,19 @@ export function AppHeader() {
       <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <div className="flex items-center gap-6">
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-foreground text-background">
-              <ChartLine className="size-5" />
-            </span>
-            <span className="text-lg font-bold tracking-tight">DataLens</span>
-            <span className="hidden rounded bg-chart-2 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-muted-foreground sm:inline">
-              SAAS
+            <span className="text-lg font-bold tracking-tight text-[24px]">
+              DataLens
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-1 text-sm font-medium lg:flex" aria-label="Principal">
+          <nav
+            className="hidden items-center gap-1 text-sm font-medium lg:flex"
+            aria-label="Principal"
+          >
             {links.map(({ href, label, also = [] }) => {
-              const active = [href, ...also].some((p) => pathname === p || pathname.startsWith(`${p}/`));
+              const active = [href, ...also].some(
+                (p) => pathname === p || pathname.startsWith(`${p}/`),
+              );
               return (
                 <Link
                   key={href}
@@ -51,7 +50,7 @@ export function AppHeader() {
 
         <div className="flex items-center gap-3 sm:gap-4">
           <Link
-            href="/analisar"
+            href="/analyses/new"
             className="inline-flex items-center gap-3 rounded-full bg-primary py-1.5 pr-1.5 pl-4 text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/30 transition-transform hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Carregar CSV
@@ -60,10 +59,18 @@ export function AppHeader() {
             </span>
           </Link>
 
-          <button type="button" aria-label="Ajuda" className="hidden rounded-full p-2 text-muted-foreground hover:bg-secondary hover:text-foreground sm:block">
+          {/* <button
+            type="button"
+            aria-label="Ajuda"
+            className="hidden rounded-full p-2 text-muted-foreground hover:bg-secondary hover:text-foreground sm:block"
+          >
             <CircleHelp className="size-5" />
           </button>
-          <button type="button" aria-label="Notificações" className="relative hidden rounded-full p-2 text-muted-foreground hover:bg-secondary hover:text-foreground sm:block">
+          <button
+            type="button"
+            aria-label="Notificações"
+            className="relative hidden rounded-full p-2 text-muted-foreground hover:bg-secondary hover:text-foreground sm:block"
+          >
             <Bell className="size-5" />
             <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-primary" />
           </button>
@@ -76,7 +83,9 @@ export function AppHeader() {
               <span className="block font-semibold">João Silva</span>
               <span className="text-muted-foreground">Admin</span>
             </span>
-          </div>
+          </div> */}
+
+
         </div>
       </div>
     </header>

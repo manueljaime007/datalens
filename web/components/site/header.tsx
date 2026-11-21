@@ -9,7 +9,7 @@ const links = [
   { href: "/#produto", label: "Produto", match: null },
   { href: "/#funcionalidades", label: "Funcionalidades", match: null },
   { href: "/changelog", label: "Changelog", match: "/changelog" },
-  { href: "/terms", label: "Termos", match: "/terms" },
+  // { href: "/terms", label: "Termos", match: "/terms" },
 ];
 
 export function Header() {
@@ -76,7 +76,7 @@ export function Header() {
             <Moon className="size-5" />
           </button> */}
           <div className="hidden sm:block">
-            <PrimaryButton href="/analisar" size="sm">
+            <PrimaryButton href="/analyses/new" size="sm">
               Começar a analisar
             </PrimaryButton>
           </div>
@@ -124,7 +124,7 @@ export function Header() {
                 Termos
               </Link>
               <Link
-                href="/analisar"
+                href="/analyses/new"
                 className="mt-2 block rounded-xl bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground sm:hidden"
               >
                 Começar a analisar

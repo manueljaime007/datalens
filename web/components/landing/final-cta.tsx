@@ -15,7 +15,7 @@ export function FinalCta() {
           números. Sem fricção, sem configurações complicadas.
         </p>
         <div className="mt-8">
-          <PrimaryButton href="/analisar">Analisar o meu CSV</PrimaryButton>
+          <PrimaryButton href="/analyses/new">Analisar o meu CSV</PrimaryButton>
         </div>
         <p className="mt-6 text-xs text-primary/80">
           Sem necessidade de registo de cartão de crédito • Resultados imediatos
