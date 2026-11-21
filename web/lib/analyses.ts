@@ -3,6 +3,10 @@
  * O histórico usa `analyses` (resumo) e a página /analysis/[id] usa `getAnalysis(id)` (detalhe).
  */
 
+
+import type { Analysis } from "@/shared/types/analysis";
+
+
 export type AnalysisSummary = {
   id: string;
   file: string;
@@ -125,34 +129,68 @@ const extras: Record<
   },
 };
 
-export function getAnalysis(id: string): AnalysisDetail | null {
-  const s = analyses.find((a) => a.id === id);
-  const extra = extras[id];
-  if (!s || !extra) return null;
+// export function getAnalysis(id: string): AnalysisDetail | null {
+//   const s = analyses.find((a) => a.id === id);
+//   const extra = extras[id];
+//   if (!s || !extra) return null;
 
-  const revFactor = s.revenue / BASE_REVENUE;
-  const rowFactor = s.rows / BASE_ROWS;
+//   const revFactor = s.revenue / BASE_REVENUE;
+//   const rowFactor = s.rows / BASE_ROWS;
 
-  // Escala as categorias e fecha a última para a soma bater certo com a receita total
-  const categories = baseCategories.map(([name, revenue]) => ({
-    name,
-    revenue: Math.round(revenue * revFactor),
-  }));
-  const head = categories.slice(0, -1).reduce((sum, c) => sum + c.revenue, 0);
-  categories[categories.length - 1].revenue = s.revenue - head;
+//   // Escala as categorias e fecha a última para a soma bater certo com a receita total
+//   const categories = baseCategories.map(([name, revenue]) => ({
+//     name,
+//     revenue: Math.round(revenue * revFactor),
+//   }));
+//   const head = categories.slice(0, -1).reduce((sum, c) => sum + c.revenue, 0);
+//   categories[categories.length - 1].revenue = s.revenue - head;
 
-  return {
-    ...s,
-    encoding: "CSV UTF-8",
-    analysedAt: extra.analysedAt,
-    skus: extra.skus,
-    ingestSeconds: extra.ingestSeconds,
-    units: Math.round(BASE_UNITS * rowFactor),
-    categories,
-    products: baseProducts.map(([name, qty, revenue]) => ({
-      name,
-      qty: Math.round(qty * rowFactor),
-      revenue: Math.round(revenue * revFactor),
-    })),
-  };
+//   return {
+//     ...s,
+//     encoding: "CSV UTF-8",
+//     analysedAt: extra.analysedAt,
+//     skus: extra.skus,
+//     ingestSeconds: extra.ingestSeconds,
+//     units: Math.round(BASE_UNITS * rowFactor),
+//     categories,
+//     products: baseProducts.map(([name, qty, revenue]) => ({
+//       name,
+//       qty: Math.round(qty * rowFactor),
+//       revenue: Math.round(revenue * revFactor),
+//     })),
+//   };
+// }
+
+export function getAnalysis(id: string | number): Analysis | undefined {
+  return MOCK_ANALYSES.find((a) => a.id === Number(id));
 }
+
+
+/**
+ * TODO(sync): replace with fetch to the Flask API.
+ * GET /analyses      -> Analysis[]
+ * GET /analyses/:id  -> Analysis
+ */
+export const MOCK_ANALYSES: Analysis[] = [
+  {
+    id: 4,
+    filename: "sales.csv",
+    total_records: 6,
+    total_quantity: 29,
+    total_revenue: "811000.00",
+    average_value: "135166.67",
+    revenue_by_category: [
+      { category: "Acessórios", revenue: 171000.0 },
+      { category: "Tecnologia", revenue: 640000.0 },
+    ],
+    top_products: [
+      { product: "Auriculares", quantity: 10 },
+      { product: "Rato", quantity: 8 },
+      { product: "Teclado", quantity: 5 },
+      { product: "Telemóvel", quantity: 4 },
+      { product: "Monitor", quantity: 2 },
+    ],
+  },
+  /* adicione 1-2 mocks extras se quiser testar /analyses/5, /analyses/6 */
+];
+
