@@ -21,7 +21,10 @@ export function PublicHeader() {
           <Link href="/" className="text-lg font-extrabold tracking-tight">
             DataLens
           </Link>
-          <nav className="hidden items-center gap-6 text-sm font-medium md:flex" aria-label="Principal">
+          <nav
+            className="hidden items-center gap-6 text-sm font-medium md:flex"
+            aria-label="Principal"
+          >
             {links.map(({ href, label, match }) => {
               const active = match !== null && pathname.startsWith(match);
               return (
@@ -29,7 +32,11 @@ export function PublicHeader() {
                   key={href}
                   href={href}
                   aria-current={active ? "page" : undefined}
-                  className={active ? "text-primary" : "transition-colors hover:text-primary"}
+                  className={
+                    active
+                      ? "text-primary"
+                      : "transition-colors hover:text-primary"
+                  }
                 >
                   {label}
                 </Link>
@@ -39,9 +46,9 @@ export function PublicHeader() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link href="/entrar" className="hidden text-sm font-medium transition-colors hover:text-primary sm:block">
+          {/* <Link href="/entrar" className="hidden text-sm font-medium transition-colors hover:text-primary sm:block">
             Entrar
-          </Link>
+          </Link> */}
           <Link
             href="/analisar"
             className="inline-flex items-center gap-3 rounded-full bg-primary py-1.5 pr-1.5 pl-4 text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/30 transition-transform hover:scale-[1.02]"
@@ -51,13 +58,13 @@ export function PublicHeader() {
               <ArrowUpRight className="size-4" />
             </span>
           </Link>
-          <Link
+          {/* <Link
             href="/entrar"
             aria-label="Conta"
             className="flex size-9 items-center justify-center rounded-full bg-foreground text-background"
           >
             <User className="size-4" />
-          </Link>
+          </Link> */}
         </div>
       </div>
     </header>

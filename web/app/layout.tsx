@@ -28,6 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         "h-full antialiased font-sans",
         jakarta.variable,
         geistMono.variable,
+        "scroll-smooth"
       )}
     >
       <body className="min-h-full flex flex-col">{children}</body>
