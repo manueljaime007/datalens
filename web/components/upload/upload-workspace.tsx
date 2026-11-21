@@ -104,19 +104,19 @@ export function UploadWorkspace() {
 
   /* ----------------------------- Simulador (dev) ---------------------------- */
 
-  function simulate(next: Status) {
-    setDemo(true);
-    setStatus(next);
-    if (next === "selected" || next === "processing") {
-      setFile({ name: "vendas_angola_2024_q3.csv", size: 2.4 * 1024 * 1024 });
-    }
-    if (next === "invalid") {
-      setFile(null);
-      setError("Formato inválido. Só são aceites ficheiros .csv.");
-    }
-    if (next === "processing") setProgress(64);
-    if (next === "idle" || next === "dragging") setFile(null);
-  }
+  // function simulate(next: Status) {
+  //   setDemo(true);
+  //   setStatus(next);
+  //   if (next === "selected" || next === "processing") {
+  //     setFile({ name: "vendas_angola_2024_q3.csv", size: 2.4 * 1024 * 1024 });
+  //   }
+  //   if (next === "invalid") {
+  //     setFile(null);
+  //     setError("Formato inválido. Só são aceites ficheiros .csv.");
+  //   }
+  //   if (next === "processing") setProgress(64);
+  //   if (next === "idle" || next === "dragging") setFile(null);
+  // }
 
   /* ------------------------------ Drag & drop ------------------------------- */
 
@@ -134,7 +134,7 @@ export function UploadWorkspace() {
   return (
     <div>
       {/* Simulador de estados */}
-      {SHOW_SIMULATOR && (
+      {/* {SHOW_SIMULATOR && (
         <div className="flex items-center gap-3 overflow-x-auto rounded-full bg-chart-2/50 p-1.5 pl-4 text-xs">
           <span className="hidden shrink-0 items-center gap-2 font-semibold tracking-wide text-muted-foreground uppercase sm:flex">
             <SlidersHorizontal className="size-3.5 text-primary" /> Simulador de estados:
@@ -157,13 +157,15 @@ export function UploadWorkspace() {
             ))}
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Cabeçalho */}
       <div className="mt-10 text-center">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-[11px] font-semibold tracking-wide text-accent-foreground uppercase">
-          <span className="size-1.5 rounded-full bg-primary" /> Nova análise
+          
+        <span className="size-1.5 rounded-full bg-primary" /> Nova análise
         </span>
+
         <h1 className="mt-4 text-4xl font-extrabold tracking-tighter sm:text-5xl">
           Vamos analisar os teus dados.
         </h1>
@@ -280,7 +282,7 @@ export function UploadWorkspace() {
         {/* Rodapé do cartão */}
         <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
           <p className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Lock className="size-4" /> Processado de forma 100% segura no teu navegador.
+            Tudo processado no teu navegador.
           </p>
           <button
             type="button"

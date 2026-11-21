@@ -43,6 +43,7 @@ export function Hero() {
               formatos CSV
             </li>
           </ul>
+          
         </div>
 
         <DashboardPreview />
