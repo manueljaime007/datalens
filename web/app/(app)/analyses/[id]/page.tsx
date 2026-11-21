@@ -19,8 +19,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function AnalysisPage({ params }: Props) {
   const { id } = await params;
-  const analysis = getAnalysis(id);
-  if (!analysis) notFound();
+  const analysis = getAnalysis(id)!;
+  // if (!analysis) notFound();
+  // if (!analysis) return;
 
   return <AnalysisView analysis={analysis} />;
 }

@@ -82,7 +82,7 @@ export function TermsToc({ sections }: { sections: Section[] }) {
           <Printer className="size-4" /> Imprimir documento
         </button>
         <Link
-          href="/analisar"
+          href="/analyses/new"
           className="flex w-full items-center justify-between rounded-full bg-primary py-1.5 pr-1.5 pl-4 text-xs font-semibold text-primary-foreground shadow-sm shadow-primary/30 transition-transform hover:scale-[1.01]"
         >
           Abrir aplicação

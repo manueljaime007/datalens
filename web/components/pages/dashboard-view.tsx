@@ -129,7 +129,7 @@ export function DashboardView() {
 
         <div className="flex items-center gap-3">
           <Link
-            href="/analisar"
+            href="/analyses/new"
             className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold shadow-sm transition-colors hover:bg-secondary"
           >
             <Upload className="size-4" /> Carregar outro ficheiro
