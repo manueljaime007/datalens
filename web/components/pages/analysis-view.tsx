@@ -23,7 +23,8 @@ import {
 import type { AnalysisDetail } from "@/lib/analyses";
 
 /** 1420 -> "1.420" (o Intl pt-PT não agrupa números de 4 dígitos) */
-const num = (n: number) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+const num = (n: number) =>
+  String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 /** 2891.4035 -> "2.891,40" */
 const money = (n: number) => {
   const [int, dec] = n.toFixed(2).split(".");
@@ -48,29 +49,40 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
       {/* Navegação e simulador */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <nav aria-label="Localização" className="text-xs text-muted-foreground">
-          <Link href="/dashboard" className="hover:text-foreground">Dashboard</Link>
+          <Link href="/dashboard" className="hover:text-foreground">
+            Dashboard
+          </Link>
           <span className="mx-1">›</span>
           <span className="font-semibold text-foreground">Análise</span>
         </nav>
 
         {SHOW_SIMULATOR && (
-          <div className="flex rounded-full bg-chart-2/50 p-1 text-xs font-medium" role="group" aria-label="Simulador de estado">
+          <div
+            className="flex rounded-full bg-chart-2/50 p-1 text-xs font-medium"
+            role="group"
+            aria-label="Simulador de estado"
+          >
             <button
               type="button"
               aria-pressed={!processing}
               onClick={() => setView("ready")}
               className={`flex items-center gap-2 rounded-full px-3.5 py-1.5 transition-colors ${
-                !processing ? "bg-background shadow-sm" : "text-muted-foreground hover:text-foreground"
+                !processing
+                  ? "bg-background shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              <span className="size-1.5 rounded-full bg-primary" /> Ver dados analisados
+              <span className="size-1.5 rounded-full bg-primary" /> Ver dados
+              analisados
             </button>
             <button
               type="button"
               aria-pressed={processing}
               onClick={() => setView("processing")}
               className={`flex items-center gap-2 rounded-full px-3.5 py-1.5 transition-colors ${
-                processing ? "bg-background shadow-sm" : "text-muted-foreground hover:text-foreground"
+                processing
+                  ? "bg-background shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <RotateCw className="size-3.5" /> Simular estado: a processar
@@ -86,9 +98,12 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
             <span className="size-1.5 rounded-full bg-primary" />
             {processing ? "A processar" : "Telemetria concluída"}
           </span>
-          <h1 className="mt-3 text-4xl font-extrabold tracking-tighter sm:text-5xl">Resultado da análise</h1>
+          <h1 className="mt-3 text-4xl font-extrabold tracking-tighter sm:text-5xl">
+            Resultado da análise
+          </h1>
           <p className="mt-2 text-muted-foreground">
-            Consulta os principais indicadores e informações extraídas do teu ficheiro.
+            Consulta os principais indicadores e informações extraídas do teu
+            ficheiro.
           </p>
         </div>
 
@@ -126,8 +141,11 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
               </span>
             </p>
             <p className="mt-0.5 text-xs text-muted-foreground">
-              {a.size} <span aria-hidden>•</span> {num(a.rows)} linhas processadas <span aria-hidden>•</span>{" "}
-              <span className="font-medium text-accent-foreground">100% íntegro</span>
+              {a.size} <span aria-hidden>•</span> {num(a.rows)} linhas
+              processadas <span aria-hidden>•</span>{" "}
+              <span className="font-medium text-accent-foreground">
+                100% íntegro
+              </span>
             </p>
           </div>
         </div>
@@ -141,7 +159,10 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
       ) : (
         <>
           {/* KPIs principais */}
-          <section aria-label="Indicadores principais" className="mt-8 grid gap-4 md:grid-cols-3">
+          <section
+            aria-label="Indicadores principais"
+            className="mt-8 grid gap-4 md:grid-cols-3"
+          >
             <BigStat
               icon={Database}
               badge="Válido"
@@ -149,7 +170,8 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
               value={num(a.rows)}
               note={
                 <>
-                  <b className="text-accent-foreground">+100%</b> validados sem inconsistências
+                  <b className="text-accent-foreground">+100%</b> validados sem
+                  inconsistências
                 </>
               }
             />
@@ -172,10 +194,30 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
           </section>
 
           {/* KPIs secundários */}
-          <section aria-label="Indicadores secundários" className="mt-4 grid gap-4 md:grid-cols-3">
-            <MiniStat icon={Calculator} label="Valor médio por linha" value={money(avgPerLine)} unit="Kz" tag="Ticket ponderado" />
-            <MiniStat icon={Gauge} label="Tempo de ingestão" value={a.ingestSeconds} unit="seg" tag="Local WASM" />
-            <MiniStat icon={Shapes} label="Segmentos registados" value={`${a.categories.length} Categorias`} tag="100% mapeadas" />
+          <section
+            aria-label="Indicadores secundários"
+            className="mt-4 grid gap-4 md:grid-cols-3"
+          >
+            <MiniStat
+              icon={Calculator}
+              label="Valor médio por linha"
+              value={money(avgPerLine)}
+              unit="Kz"
+              tag="Ticket ponderado"
+            />
+            <MiniStat
+              icon={Gauge}
+              label="Tempo de ingestão"
+              value={a.ingestSeconds}
+              unit="seg"
+              tag="Local WASM"
+            />
+            <MiniStat
+              icon={Shapes}
+              label="Segmentos registados"
+              value={`${a.categories.length} Categorias`}
+              tag="100% mapeadas"
+            />
           </section>
 
           {/* Receita por categoria */}
@@ -189,11 +231,13 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
                   </span>
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Distribuição da receita gerada por cada categoria no ficheiro importado.
+                  Distribuição da receita gerada por cada categoria no ficheiro
+                  importado.
                 </p>
               </div>
               <p className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-                <span className="size-2 rounded-full bg-primary" /> Volume em Kwanza (Kz)
+                <span className="size-2 rounded-full bg-primary" /> Volume em
+                Kwanza (Kz)
               </p>
             </div>
 
@@ -205,9 +249,13 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
                     <div className="flex items-baseline justify-between gap-4 text-sm">
                       <p>
                         <span className="font-semibold">{c.name}</span>{" "}
-                        <span className="ml-1 text-xs text-muted-foreground">{pct(share)}%</span>
+                        <span className="ml-1 text-xs text-muted-foreground">
+                          {pct(share)}%
+                        </span>
                       </p>
-                      <p className="font-semibold tabular-nums">{num(c.revenue)} Kz</p>
+                      <p className="font-semibold tabular-nums">
+                        {num(c.revenue)} Kz
+                      </p>
                     </div>
                     <div
                       role="meter"
@@ -219,7 +267,10 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
                     >
                       <div
                         className="h-full rounded-full bg-primary"
-                        style={{ width: `${share * 100}%`, opacity: i < 3 ? 1 : i === 3 ? 0.7 : 0.5 }}
+                        style={{
+                          width: `${share * 100}%`,
+                          opacity: i < 3 ? 1 : i === 3 ? 0.7 : 0.5,
+                        }}
                       />
                     </div>
                   </li>
@@ -231,10 +282,14 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
               <p className="flex items-center gap-2">
                 <TrendingUp className="size-4 shrink-0 text-primary" />
                 <span>
-                  A categoria <b>{top.name}</b> lidera a receita com mais de {Math.floor(topShare * 10) * 10}% da faturação bruta.
+                  A categoria <b>{top.name}</b> lidera a receita com mais de{" "}
+                  {Math.floor(topShare * 10) * 10}% da faturação bruta.
                 </span>
               </p>
-              <button type="button" className="inline-flex items-center gap-1.5 rounded-full bg-background px-3.5 py-1.5 text-xs font-semibold text-accent-foreground shadow-sm hover:bg-accent">
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 rounded-full bg-background px-3.5 py-1.5 text-xs font-semibold text-accent-foreground shadow-sm hover:bg-accent"
+              >
                 Ver detalhe analítico <ArrowRight className="size-3.5" />
               </button>
             </div>
@@ -244,12 +299,18 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
           <section className="mt-8 rounded-2xl border border-border bg-card p-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h2 className="text-2xl font-bold tracking-tight">Top 5 produtos por quantidade</h2>
+                <h2 className="text-2xl font-bold tracking-tight">
+                  Top 5 produtos por quantidade
+                </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Artigos com maior quantidade física de unidades vendidas no ficheiro.
+                  Artigos com maior quantidade física de unidades vendidas no
+                  ficheiro.
                 </p>
               </div>
-              <button type="button" className="inline-flex items-center gap-2 rounded-full bg-chart-2/60 px-4 py-2 text-xs font-semibold hover:bg-chart-2">
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-full bg-chart-2/60 px-4 py-2 text-xs font-semibold hover:bg-chart-2"
+              >
                 <ListFilter className="size-3.5" /> Filtrar linhas
               </button>
             </div>
@@ -258,21 +319,34 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
               <table className="w-full min-w-[640px] text-sm">
                 <thead>
                   <tr className="bg-chart-2/40 text-[11px] tracking-wide text-muted-foreground uppercase">
-                    <th className="rounded-l-lg px-4 py-3 text-left font-semibold">Posição</th>
-                    <th className="px-3 py-3 text-left font-semibold">Produto</th>
-                    <th className="px-3 py-3 text-right font-semibold">Quantidade</th>
-                    <th className="rounded-r-lg px-4 py-3 text-right font-semibold">Receita total</th>
+                    <th className="rounded-l-lg px-4 py-3 text-left font-semibold">
+                      Posição
+                    </th>
+                    <th className="px-3 py-3 text-left font-semibold">
+                      Produto
+                    </th>
+                    <th className="px-3 py-3 text-right font-semibold">
+                      Quantidade
+                    </th>
+                    <th className="rounded-r-lg px-4 py-3 text-right font-semibold">
+                      Receita total
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {[...a.products]
                     .sort((x, y) => y.qty - x.qty)
                     .map((p, i) => (
-                      <tr key={p.name} className={`border-b border-border/60 last:border-0 ${i === 0 ? "bg-chart-2/25" : ""}`}>
+                      <tr
+                        key={p.name}
+                        className={`border-b border-border/60 last:border-0 ${i === 0 ? "bg-chart-2/25" : ""}`}
+                      >
                         <td className="px-4 py-3.5">
                           <span
                             className={`flex size-7 items-center justify-center rounded-full text-xs font-bold ${
-                              i === 0 ? "bg-primary text-primary-foreground" : "bg-chart-2/70 text-muted-foreground"
+                              i === 0
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-chart-2/70 text-muted-foreground"
                             }`}
                           >
                             {i + 1}
@@ -286,8 +360,12 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
                             </span>
                           )}
                         </td>
-                        <td className="px-3 text-right font-semibold tabular-nums">{num(p.qty)} un</td>
-                        <td className="px-4 text-right font-semibold tabular-nums">{num(p.revenue)} Kz</td>
+                        <td className="px-3 text-right font-semibold tabular-nums">
+                          {num(p.qty)} un
+                        </td>
+                        <td className="px-4 text-right font-semibold tabular-nums">
+                          {num(p.revenue)} Kz
+                        </td>
                       </tr>
                     ))}
                 </tbody>
@@ -295,8 +373,14 @@ export function AnalysisView({ analysis: a }: { analysis: AnalysisDetail }) {
             </div>
 
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
-              <p>A exibir os 5 produtos com maior saída de stock. Total de {a.skus} artigos avaliados.</p>
-              <button type="button" className="inline-flex items-center gap-2 rounded-full bg-chart-2/60 py-1.5 pr-1.5 pl-4 font-semibold text-foreground hover:bg-chart-2">
+              <p>
+                A exibir os 5 produtos com maior saída de stock. Total de{" "}
+                {a.skus} artigos avaliados.
+              </p>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-full bg-chart-2/60 py-1.5 pr-1.5 pl-4 font-semibold text-foreground hover:bg-chart-2"
+              >
                 Exportar lista completa (CSV)
                 <span className="flex size-6 items-center justify-center rounded-full bg-background">
                   <ArrowUpRight className="size-3.5" />
@@ -332,19 +416,26 @@ function BigStat({
   return (
     <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-6">
       {highlight && (
-        <div aria-hidden className="pointer-events-none absolute -top-16 -right-16 size-48 rounded-full bg-primary/15 blur-3xl" />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-16 -right-16 size-48 rounded-full bg-primary/15 blur-3xl"
+        />
       )}
       <div className="relative flex items-start justify-between">
         <span
           className={`flex size-10 items-center justify-center rounded-xl ${
-            highlight ? "bg-accent text-primary" : "bg-chart-2/60 text-accent-foreground"
+            highlight
+              ? "bg-accent text-primary"
+              : "bg-chart-2/60 text-accent-foreground"
           }`}
         >
           <Icon className="size-5" />
         </span>
         <span
           className={`rounded-full px-2.5 py-1 text-[10px] font-bold tracking-wide uppercase ${
-            highlight ? "bg-primary text-primary-foreground" : "bg-chart-2/70 text-muted-foreground"
+            highlight
+              ? "bg-primary text-primary-foreground"
+              : "bg-chart-2/70 text-muted-foreground"
           }`}
         >
           {badge}
@@ -355,7 +446,9 @@ function BigStat({
         {value}
         {unit && <span className="text-lg font-bold text-primary">{unit}</span>}
       </p>
-      <p className="relative mt-3 text-xs font-medium text-muted-foreground">{note}</p>
+      <p className="relative mt-3 text-xs font-medium text-muted-foreground">
+        {note}
+      </p>
     </div>
   );
 }
@@ -409,10 +502,16 @@ function ProcessingState({ file }: { file: string }) {
 
       <div className="mt-4 grid gap-4 md:grid-cols-3" aria-hidden>
         {[0, 1, 2].map((i) => (
-          <div key={i} className="h-48 animate-pulse rounded-2xl bg-secondary motion-reduce:animate-none" />
+          <div
+            key={i}
+            className="h-48 animate-pulse rounded-2xl bg-secondary motion-reduce:animate-none"
+          />
         ))}
       </div>
-      <div className="mt-4 h-72 animate-pulse rounded-2xl bg-secondary motion-reduce:animate-none" aria-hidden />
+      <div
+        className="mt-4 h-72 animate-pulse rounded-2xl bg-secondary motion-reduce:animate-none"
+        aria-hidden
+      />
     </div>
   );
 }
