@@ -11,6 +11,7 @@ export function AppFooter() {
             </span>
             <span className="text-muted-foreground text-xs">v1.2</span>
           </div>
+          
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span>Processamento 100% no navegador</span>
             <span aria-hidden className="text-muted-foreground/40">
@@ -21,9 +22,10 @@ export function AppFooter() {
               •
             </span>
             <span className="flex items-center gap-1 font-medium">
-              <Lock className="size-3.5" /> TLS 1.3 Seguro
+              {/* <Lock className="size-3.5" /> TLS 1.3 Seguro */}
             </span>
           </div>
+          
         </div>
         <div className="mt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-2 text-[11px] text-muted-foreground/70">
           <p>© 2026 DataLens. Todos os direitos reservados.</p>
