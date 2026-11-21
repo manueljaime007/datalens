@@ -8,28 +8,15 @@ import {
   FileSpreadsheet,
   FileUp,
   FolderOpen,
-  Hourglass,
   Loader2,
-  Lock,
-  MousePointerSquareDashed,
-  SlidersHorizontal,
   TriangleAlert,
   X,
-  type LucideIcon,
 } from "lucide-react";
 
 type Status = "idle" | "dragging" | "selected" | "invalid" | "processing";
 
 const MAX_SIZE = 50 * 1024 * 1024; // 50 MB
-const SHOW_SIMULATOR = process.env.NODE_ENV !== "production";
 
-const states: { id: Status; label: string; icon: LucideIcon }[] = [
-  { id: "idle", label: "1. Padrão", icon: FileUp },
-  { id: "dragging", label: "2. Arrastar", icon: MousePointerSquareDashed },
-  { id: "selected", label: "3. Selecionado", icon: BadgeCheck },
-  { id: "invalid", label: "4. Inválido", icon: TriangleAlert },
-  { id: "processing", label: "5. A Processar", icon: Hourglass },
-];
 
 function formatSize(bytes: number) {
   if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;

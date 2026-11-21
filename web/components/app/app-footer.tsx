@@ -1,5 +1,3 @@
-import { Lock } from "lucide-react";
-
 export function AppFooter() {
   return (
     <footer className="border-t border-border/70 bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60">

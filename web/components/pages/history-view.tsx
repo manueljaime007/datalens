@@ -8,13 +8,11 @@ import {
   ArrowUpRight,
   BadgeCheck,
   Banknote,
-  ChevronDown,
   Database,
   FileText,
   FileUp,
   LayoutGrid,
   Search,
-  Shield,
   Table2,
   type LucideIcon,
 } from "lucide-react";

@@ -1,4 +1,3 @@
-import { Lock } from "lucide-react";
 import { AppHeader } from "@/components/app/app-header";
 import { AppFooter } from "@/components/app/app-footer";
 
