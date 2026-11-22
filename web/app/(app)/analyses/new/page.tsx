@@ -34,7 +34,7 @@ export default function AnalisarPage() {
       {/* Destaques */}
       <ul className="mt-6 grid gap-4 md:grid-cols-3">
         {highlights.map(({ title, text, icon: Icon }) => (
-          <li key={title} className="flex gap-3 rounded-2xl border border-border bg-card p-4">
+          <li key={title} className="flex flex-wrap gap-3 rounded-2xl border border-border bg-card p-4">
             <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-chart-2/60">
               <Icon className="size-5" />
             </span>
@@ -47,6 +47,7 @@ export default function AnalisarPage() {
       </ul>
 
       {/* Histórico */}
+
       <section className="mt-4 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-chart-2/40 p-5">
         <div className="flex items-center gap-4">
           <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-chart-2">
@@ -63,7 +64,7 @@ export default function AnalisarPage() {
         </div>
 
         <Link
-          href="/historico"
+          href="/history"
           className="inline-flex items-center gap-3 rounded-full bg-background py-1.5 pr-1.5 pl-5 text-sm font-semibold shadow-sm transition-colors hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           Ver histórico de análises

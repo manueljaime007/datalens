@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const analysis = getAnalysis(id);
   return {
     title: analysis
-      ? `${analysis.file} | DataLens`
+      ? `${analysis.filename} | DataLens`
       : "Análise não encontrada | DataLens",
     description:
       "Indicadores, receita por categoria e top de produtos extraídos do teu ficheiro CSV.",
@@ -19,9 +19,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function AnalysisPage({ params }: Props) {
   const { id } = await params;
-  const analysis = getAnalysis(id)!;
-  // if (!analysis) notFound();
-  // if (!analysis) return;
+  const analysis = getAnalysis(id);
+
+  if (!analysis) notFound();
 
   return <AnalysisView analysis={analysis} />;
 }

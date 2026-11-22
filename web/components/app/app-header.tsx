@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FileUp } from "lucide-react";
+import { Suspense } from "react";
+import { NavLinks } from "./nav-links";
+
 
 const links: { href: string; label: string; also?: string[] }[] = [
   { href: "/dashboard", label: "Dashboard", also: ["/analysis"] },
@@ -22,7 +25,7 @@ export function AppHeader() {
             </span>
           </Link>
 
-          <nav
+          {/* <nav
             className="hidden items-center gap-1 text-sm font-medium lg:flex"
             aria-label="Principal"
           >
@@ -45,7 +48,11 @@ export function AppHeader() {
                 </Link>
               );
             })}
-          </nav>
+          </nav> */}
+
+          <Suspense fallback={<div className="hidden lg:block h-9 w-48" />}>
+            <NavLinks />
+          </Suspense>
         </div>
 
         <div className="flex items-center gap-3 sm:gap-4">
