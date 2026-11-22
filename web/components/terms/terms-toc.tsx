@@ -12,7 +12,9 @@ export function TermsToc({ sections }: { sections: Section[] }) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         if (visible[0]) setActive(visible[0].target.id);
       },
       { rootMargin: "-15% 0px -70% 0px" },
@@ -27,14 +29,19 @@ export function TermsToc({ sections }: { sections: Section[] }) {
   function go(id: string) {
     const el = document.getElementById(id);
     if (!el) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     history.replaceState(null, "", `#${id}`);
     setActive(id);
   }
 
   return (
-    <nav aria-label="Índice de secções" className="rounded-2xl border border-border bg-card p-5 shadow-sm print:hidden">
+    <nav
+      aria-label="Índice de secções"
+      className="rounded-2xl border border-border bg-card p-5 shadow-sm print:hidden"
+    >
       <div className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 font-semibold tracking-tight">
           <ListTree className="size-4 text-primary" /> Índice de secções
@@ -62,7 +69,9 @@ export function TermsToc({ sections }: { sections: Section[] }) {
                     : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                 }`}
               >
-                <span className="w-4 text-[11px] tabular-nums opacity-70">{String(i + 1).padStart(2, "0")}</span>
+                <span className="w-4 text-[11px] tabular-nums opacity-70">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 <span className="flex-1">
                   {i + 1}. {s.title}
                 </span>
