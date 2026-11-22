@@ -16,7 +16,6 @@ export default function ChangelogPage() {
         Acompanha as novidades, melhorias e correções do DataLens.
       </p>
 
-      {/* Empty state — substituir quando houver fonte real de changelog */}
       <div className="mt-12 rounded-2xl border border-border bg-card p-8 text-center">
         <p className="text-sm font-semibold">
           Ainda não há atualizações publicadas.
