@@ -1,3 +1,5 @@
+export const instant = false;
+
 import { AppHeader } from "@/components/app/app-header";
 import { AppFooter } from "@/components/app/app-footer";
 
