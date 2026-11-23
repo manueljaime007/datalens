@@ -25,7 +25,12 @@ export function RevenueByAnalysisChart({ analyses }: { analyses: Analysis[] }) {
 
   return (
     <div className="h-64 w-full">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer
+  width="100%"
+  height="100%"
+  minWidth={0}
+  initialDimension={{ width: 1, height: 1 }}
+>
         <BarChart
           data={data}
           layout="vertical"
@@ -67,7 +72,12 @@ export function RecordsVsUnitsChart({ analyses }: { analyses: Analysis[] }) {
 
   return (
     <div className="h-64 w-full">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer
+  width="100%"
+  height="100%"
+  minWidth={0}
+  initialDimension={{ width: 1, height: 1 }}
+>
         <BarChart data={data} margin={{ top: 8, right: 8, bottom: 8, left: 8 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="name" tick={{ fontSize: 11 }} />
