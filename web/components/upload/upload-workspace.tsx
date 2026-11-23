@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
@@ -12,11 +12,11 @@ import {
   TriangleAlert,
   X,
 } from "lucide-react";
+import { analysesService } from "@/services/analyses.service";
 
 type Status = "idle" | "dragging" | "selected" | "invalid" | "processing";
 
 const MAX_SIZE = 50 * 1024 * 1024; // 50 MB
-
 
 function formatSize(bytes: number) {
   if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
@@ -28,16 +28,12 @@ export function UploadWorkspace() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [status, setStatus] = useState<Status>("idle");
-  const [file, setFile] = useState<{ name: string; size: number } | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [progress, setProgress] = useState(0);
-  const [demo, setDemo] = useState(false); // estado vindo do simulador
-
-  /* ------------------------------ Validação ------------------------------- */
 
   function handleFile(f: File | undefined) {
     if (!f) return;
-    setDemo(false);
 
     if (!f.name.toLowerCase().endsWith(".csv")) {
       setFile(null);
@@ -51,13 +47,13 @@ export function UploadWorkspace() {
       setStatus("invalid");
       return;
     }
+
     setError("");
-    setFile({ name: f.name, size: f.size });
+    setFile(f);
     setStatus("selected");
   }
 
   function reset() {
-    setDemo(false);
     setFile(null);
     setError("");
     setProgress(0);
@@ -65,47 +61,30 @@ export function UploadWorkspace() {
     if (inputRef.current) inputRef.current.value = "";
   }
 
-  function startAnalysis() {
-    if (status !== "selected") return;
-    setDemo(false);
+  async function startAnalysis() {
+    if (!file) return;
+
     setProgress(0);
     setStatus("processing");
-  }
 
-  /* ------------------------ Progresso (análise real) ------------------------ */
-
-  useEffect(() => {
-    if (status !== "processing" || demo) return;
-    const id = setInterval(() => {
-      setProgress((p) => Math.min(100, p + 8));
+    // Animação fake de progresso enquanto o upload decorre
+    const interval = setInterval(() => {
+      setProgress((p) => Math.min(90, p + 8));
     }, 180);
-    return () => clearInterval(id);
-  }, [status, demo]);
 
-  useEffect(() => {
-    if (status === "processing" && !demo && progress >= 100) {
-      // TODO: ler o CSV com papaparse e guardar o resultado (IndexedDB) antes de navegar
-      router.push("/dashboard");
+    try {
+      const analysis = await analysesService.upload(file);
+      clearInterval(interval);
+      setProgress(100);
+      router.push(`/analyses/${analysis.id}`);
+    } catch (err) {
+      clearInterval(interval);
+      setError(
+        err instanceof Error ? err.message : "Falha ao enviar o ficheiro.",
+      );
+      setStatus("invalid");
     }
-  }, [progress, status, demo, router]);
-
-  /* ----------------------------- Simulador (dev) ---------------------------- */
-
-  // function simulate(next: Status) {
-  //   setDemo(true);
-  //   setStatus(next);
-  //   if (next === "selected" || next === "processing") {
-  //     setFile({ name: "vendas_angola_2024_q3.csv", size: 2.4 * 1024 * 1024 });
-  //   }
-  //   if (next === "invalid") {
-  //     setFile(null);
-  //     setError("Formato inválido. Só são aceites ficheiros .csv.");
-  //   }
-  //   if (next === "processing") setProgress(64);
-  //   if (next === "idle" || next === "dragging") setFile(null);
-  // }
-
-  /* ------------------------------ Drag & drop ------------------------------- */
+  }
 
   const busy = status === "processing";
 
@@ -120,44 +99,17 @@ export function UploadWorkspace() {
 
   return (
     <div>
-      {/* Simulador de estados */}
-      {/* {SHOW_SIMULATOR && (
-        <div className="flex items-center gap-3 overflow-x-auto rounded-full bg-chart-2/50 p-1.5 pl-4 text-xs">
-          <span className="hidden shrink-0 items-center gap-2 font-semibold tracking-wide text-muted-foreground uppercase sm:flex">
-            <SlidersHorizontal className="size-3.5 text-primary" /> Simulador de estados:
-          </span>
-          <div className="ml-auto flex gap-1">
-            {states.map(({ id, label, icon: Icon }) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => simulate(id)}
-                aria-pressed={status === id}
-                className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 font-medium transition-colors ${
-                  status === id
-                    ? "bg-foreground text-background"
-                    : "text-muted-foreground hover:bg-background/70 hover:text-foreground"
-                }`}
-              >
-                <Icon className="size-3.5" /> {label}
-              </button>
-            ))}
-          </div>
-        </div>
-      )} */}
-
       {/* Cabeçalho */}
       <div className="mt-10 text-center">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-[11px] font-semibold tracking-wide text-accent-foreground uppercase">
-          
-        <span className="size-1.5 rounded-full bg-primary" /> Nova análise
+          <span className="size-1.5 rounded-full bg-primary" /> Nova análise
         </span>
-
         <h1 className="mt-4 text-4xl font-extrabold tracking-tighter sm:text-5xl">
           Vamos analisar os teus dados.
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-muted-foreground text-balance">
-          Carrega um ficheiro CSV para descobrires informações importantes sobre as tuas vendas de forma instantânea e privada.
+          Carrega um ficheiro CSV para descobrires informações importantes sobre
+          as tuas vendas.
         </p>
       </div>
 
@@ -188,32 +140,35 @@ export function UploadWorkspace() {
             aria-label="Escolher ficheiro CSV"
           />
 
-          {/* Padrão e arrastar */}
           {(status === "idle" || status === "dragging") && (
             <>
               <span className="flex size-16 items-center justify-center rounded-2xl bg-accent text-primary">
                 <FileUp className="size-8" />
               </span>
               <h2 className="mt-5 text-xl font-bold tracking-tight">
-                {status === "dragging" ? "Larga o ficheiro para o carregar" : "Arrasta o teu ficheiro CSV para aqui"}
+                {status === "dragging"
+                  ? "Larga o ficheiro para o carregar"
+                  : "Arrasta o teu ficheiro CSV para aqui"}
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                ou selecciona um ficheiro diretamente do teu dispositivo
+                ou seleciona um ficheiro diretamente do teu dispositivo
               </p>
               <ChooseButton onClick={() => inputRef.current?.click()} />
               <FormatHint />
             </>
           )}
 
-          {/* Selecionado */}
           {status === "selected" && file && (
             <>
               <span className="flex size-16 items-center justify-center rounded-2xl bg-success/10 text-success">
                 <FileSpreadsheet className="size-8" />
               </span>
-              <h2 className="mt-5 max-w-full truncate text-xl font-bold tracking-tight">{file.name}</h2>
+              <h2 className="mt-5 max-w-full truncate text-xl font-bold tracking-tight">
+                {file.name}
+              </h2>
               <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
-                <BadgeCheck className="size-4 text-success" /> {formatSize(file.size)} • pronto para analisar
+                <BadgeCheck className="size-4 text-success" />{" "}
+                {formatSize(file.size)} • pronto para analisar
               </p>
               <button
                 type="button"
@@ -225,32 +180,35 @@ export function UploadWorkspace() {
             </>
           )}
 
-          {/* Inválido */}
           {status === "invalid" && (
             <>
               <span className="flex size-16 items-center justify-center rounded-2xl bg-destructive/10 text-destructive">
                 <TriangleAlert className="size-8" />
               </span>
-              <h2 className="mt-5 text-xl font-bold tracking-tight">Não foi possível usar este ficheiro</h2>
+              <h2 className="mt-5 text-xl font-bold tracking-tight">
+                Não foi possível usar este ficheiro
+              </h2>
               <p role="alert" className="mt-1 text-sm text-destructive">
                 {error}
               </p>
-              <ChooseButton label="Escolher outro ficheiro" onClick={() => inputRef.current?.click()} />
+              <ChooseButton
+                label="Escolher outro ficheiro"
+                onClick={() => inputRef.current?.click()}
+              />
               <FormatHint />
             </>
           )}
 
-          {/* A processar */}
           {status === "processing" && (
             <div className="w-full max-w-sm" aria-live="polite">
               <span className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-accent text-primary">
                 <Loader2 className="size-8 animate-spin motion-reduce:animate-none" />
               </span>
               <h2 className="mt-5 truncate text-xl font-bold tracking-tight">
-                A processar {file?.name ?? "o ficheiro"}
+                A enviar {file?.name ?? "o ficheiro"}
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                A ler linhas, a validar colunas e a calcular totais.
+                A enviar o ficheiro para análise.
               </p>
               <div
                 role="progressbar"
@@ -259,17 +217,22 @@ export function UploadWorkspace() {
                 aria-valuemax={100}
                 className="mt-6 h-2 overflow-hidden rounded-full bg-background"
               >
-                <div className="h-full rounded-full bg-primary transition-[width]" style={{ width: `${progress}%` }} />
+                <div
+                  className="h-full rounded-full bg-primary transition-[width]"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
-              <p className="mt-2 text-xs font-semibold text-primary">{progress}%</p>
+              <p className="mt-2 text-xs font-semibold text-primary">
+                {progress}%
+              </p>
             </div>
           )}
         </div>
 
-        {/* Rodapé do cartão */}
         <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
           <p className="flex items-center gap-2 text-xs text-muted-foreground">
-            Tudo processado no teu navegador.
+            O parsing acontece no teu navegador; os resultados são guardados na
+            API para consultares mais tarde.
           </p>
           <button
             type="button"
@@ -287,8 +250,6 @@ export function UploadWorkspace() {
     </div>
   );
 }
-
-/* ------------------------------ Auxiliares -------------------------------- */
 
 function ChooseButton({
   onClick,
@@ -311,7 +272,8 @@ function ChooseButton({
 function FormatHint() {
   return (
     <p className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-chart-2/70 px-3 py-1 text-xs font-medium">
-      <BadgeCheck className="size-3.5 text-primary" /> Formato suportado: .CSV (até 50MB, UTF-8)
+      <BadgeCheck className="size-3.5 text-primary" /> Formato suportado: .CSV
+      (até 50 MB, UTF-8)
     </p>
   );
 }
