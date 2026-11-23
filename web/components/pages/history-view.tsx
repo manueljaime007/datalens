@@ -22,59 +22,19 @@ import {
   RecordsVsUnitsChart,
 } from "@/components/app/history-charts";
 
-/* -------------------------------------------------------------------------- */
-/*  Placeholder data                                                          */
-/*                                                                            */
-/*  TODO(sync): replace MOCK_ANALYSES with a fetch to the Flask API.          */
-/*  Endpoint: GET /analyses (returns Analysis[]).                             */
-/*  The API does not expose per-analysis date, size, status, or margin.       */
-/*  total_revenue and average_value arrive as strings — parse before use.     */
-/* -------------------------------------------------------------------------- */
-
-const MOCK_ANALYSES: Analysis[] = [
-  {
-    id: 4,
-    filename: "sales.csv",
-    total_records: 6,
-    total_quantity: 29,
-    total_revenue: "811000.00",
-    average_value: "135166.67",
-    revenue_by_category: [
-      { category: "Acessórios", revenue: 171000.0 },
-      { category: "Tecnologia", revenue: 640000.0 },
-    ],
-    top_products: [
-      { product: "Auriculares", quantity: 10 },
-      { product: "Rato", quantity: 8 },
-      { product: "Teclado", quantity: 5 },
-      { product: "Telemóvel", quantity: 4 },
-      { product: "Monitor", quantity: 2 },
-    ],
-  },
-];
-
-/* -------------------------------------------------------------------------- */
-/*  Formatters                                                                */
-/* -------------------------------------------------------------------------- */
-
 const nfDec = new Intl.NumberFormat("pt-PT", {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
 });
 
-/** 4120 -> "4.120" (Intl pt-PT does not group 4-digit numbers) */
 const kz = (n: number) =>
   String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-/* -------------------------------------------------------------------------- */
-/*  View                                                                      */
-/* -------------------------------------------------------------------------- */
-
-export function HistoryView() {
+export function HistoryView({ analyses }: { analyses: Analysis[] }) {
   const [query, setQuery] = useState("");
   const [layout, setLayout] = useState<"table" | "grid">("table");
 
-  const items = MOCK_ANALYSES;
+  const items = analyses;
 
   const filtered = useMemo(
     () =>
@@ -301,6 +261,7 @@ export function HistoryView() {
   );
 }
 
+/* Pieces — iguais ao teu (Stat, FileCell, Revenue, ViewLink, EmptyState) */
 /* -------------------------------------------------------------------------- */
 /*  Pieces                                                                    */
 /* -------------------------------------------------------------------------- */

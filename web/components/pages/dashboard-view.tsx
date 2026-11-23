@@ -15,44 +15,9 @@ import {
 } from "lucide-react";
 import type { Analysis } from "@/shared/types/analysis";
 
-/* -------------------------------------------------------------------------- */
-/*  Placeholder data                                                          */
-/*                                                                            */
-/*  TODO(sync): replace MOCK_ANALYSIS with a fetch to the Flask API.          */
-/*  Endpoint: GET /analyses (returns Analysis[]).                             */
-/*  total_revenue and average_value arrive as strings — parse before use.     */
-/*  top_products only returns product + quantity (no revenue per product).    */
-/* -------------------------------------------------------------------------- */
-
-const MOCK_ANALYSIS: Analysis = {
-  id: 4,
-  filename: "sales.csv",
-  total_records: 6,
-  total_quantity: 29,
-  total_revenue: "811000.00",
-  average_value: "135166.67",
-  revenue_by_category: [
-    { category: "Acessórios", revenue: 171000.0 },
-    { category: "Tecnologia", revenue: 640000.0 },
-  ],
-  top_products: [
-    { product: "Auriculares", quantity: 10 },
-    { product: "Rato", quantity: 8 },
-    { product: "Teclado", quantity: 5 },
-    { product: "Telemóvel", quantity: 4 },
-    { product: "Monitor", quantity: 2 },
-  ],
-};
-
-/* -------------------------------------------------------------------------- */
-/*  Formatters                                                                */
-/* -------------------------------------------------------------------------- */
-
-/** 1420 -> "1.420" (Intl pt-PT does not group 4-digit numbers) */
 const num = (n: number) =>
   String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-/** 2891.4035 -> "2.891,40" */
 const money = (n: number) => {
   const [int, dec] = n.toFixed(2).split(".");
   return `${int.replace(/\B(?=(\d{3})+(?!\d))/g, ".")},${dec}`;
@@ -60,13 +25,7 @@ const money = (n: number) => {
 
 const pct = (n: number) => (n * 100).toFixed(1).replace(".", ",");
 
-/* -------------------------------------------------------------------------- */
-/*  View                                                                      */
-/* -------------------------------------------------------------------------- */
-
-export function DashboardView() {
-  const analysis = MOCK_ANALYSIS;
-
+export function DashboardView({ analysis }: { analysis: Analysis }) {
   const totalRevenue = analysis.revenue_by_category.reduce(
     (sum, c) => sum + c.revenue,
     0,
