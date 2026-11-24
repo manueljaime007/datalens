@@ -16,7 +16,7 @@ export function AppFooter() {
           <p>
             Criado por{" "}
             <a
-              href="https://github.com/manueljaiem007"
+              href="https://github.com/manueljaime007"
               target="_blank"
               rel="noopener noreferrer"
               className="underline underline-offset-2 hover:text-foreground transition-colors"

@@ -62,8 +62,21 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-between gap-2 text-[11px] text-muted-foreground">
-          <p>© 2026 DataLens. Todos os direitos reservados.</p>
-          <p>Criado por Manuel Jaime</p>
+          <div>
+            <p>© 2026 DataLens. Todos os direitos reservados.</p>
+            <p>
+              Criado por{" "}
+              <a
+                href="https://github.com/manueljaime007"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-foreground transition-colors"
+              >
+                Manuel Jaime
+              </a>
+            </p>
+          </div>
+          <div></div>
         </div>
       </div>
     </footer>
