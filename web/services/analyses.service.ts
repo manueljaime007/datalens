@@ -1,20 +1,9 @@
 import { apiUrl } from "@/shared/config/api.config";
 import type { Analysis } from "@/shared/types/analysis";
-// import { cacheLife, cacheTag } from "next/cache";
-
-/* -------------------------------------------------------------------------- */
-/*  Types                                                                     */
-/* -------------------------------------------------------------------------- */
 
 export type UploadResponse = Analysis;
-
 export type DeleteResponse = { deleted: number };
-
 export type DeleteBulkPayload = { ids: number[] };
-
-/* -------------------------------------------------------------------------- */
-/*  Errors                                                                    */
-/* -------------------------------------------------------------------------- */
 
 export class ApiError extends Error {
   constructor(
@@ -26,13 +15,9 @@ export class ApiError extends Error {
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Core fetch                                                                */
-/* -------------------------------------------------------------------------- */
-
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 15_000);
+  const timeout = setTimeout(() => controller.abort(), 60_000 * 2);
 
   try {
     const res = await fetch(apiUrl(path), {
@@ -54,17 +39,12 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     if (res.status === 204) return undefined as T;
     return (await res.json()) as T;
   } catch (err) {
-    // if (err instanceof ApiError) throw err;
-    // if ((err as Error).name === "AbortError") {
-    //   throw new ApiError(504, "Request timed out");
-    // }
-
-    const e = err as Error & { cause?: { code?: string; message?: string } };
-    console.error("Fetch error:", {
+    const e = err as Error & { cause?: unknown };
+    console.error("Fetch error details:", {
       url: apiUrl(path),
       message: e.message,
-      code: e.cause?.code, // ex: ECONNREFUSED
-      cause: e.cause?.message,
+      cause: e.cause,
+      fullError: e,
     });
     throw new ApiError(0, (err as Error).message ?? "Network error");
   } finally {
@@ -72,25 +52,20 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Service                                                                   */
-/* -------------------------------------------------------------------------- */
-
 export const analysesService = {
   list(): Promise<Analysis[]> {
-    return request<Analysis[]>("/analyses/"); // ← barra no fim
+    return request<Analysis[]>("/analyses");
   },
 
   async get(id: string | number): Promise<Analysis | null> {
     try {
-      return await request<Analysis>(`/analyses/${id}/`); // ← barra no fim
+      return await request<Analysis>(`/analyses/${id}`);
     } catch (err) {
       if (err instanceof ApiError && err.status === 404) return null;
       throw err;
     }
   },
-  
-  /** POST /analyses/upload — multipart/form-data */
+
   async upload(file: File): Promise<UploadResponse> {
     const form = new FormData();
     form.append("file", file);
@@ -114,12 +89,10 @@ export const analysesService = {
     }
   },
 
-  /** DELETE /analyses/{id} */
   remove(id: string | number): Promise<void> {
     return request<void>(`/analyses/${id}`, { method: "DELETE" });
   },
 
-  /** DELETE /analyses/bulk */
   removeBulk(ids: number[]): Promise<DeleteResponse> {
     return request<DeleteResponse>("/analyses/bulk", {
       method: "DELETE",
@@ -127,10 +100,3 @@ export const analysesService = {
     });
   },
 };
-
-// export async function listAnalysesCached(): Promise<Analysis[]> {
-//   // "use cache";
-//   cacheLife("minutes"); // ou "hours", dependendo da frequência de atualização
-//   // cacheTag("analyses"); // tag para invalidação futura
-//   return analysesService.list();
-// }
