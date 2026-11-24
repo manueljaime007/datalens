@@ -3,14 +3,33 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FileUp } from "lucide-react";
+import { Suspense, useEffect, useRef } from "react";
+import { Github } from "@hugeicons/core-free-icons";
+import { GitHubStarsBadge } from "../site/github-stars";
 
 const links: { href: string; label: string; also?: string[] }[] = [
   { href: "/dashboard", label: "Dashboard", also: ["/analysis"] },
   { href: "/history", label: "Histórico" },
 ];
 
-export function AppHeader() {
+export function AppHeader({ stars }: { stars: number}) {
   const pathname = usePathname();
+
+  const menuRef = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        menuRef.current.removeAttribute("open");
+      }
+    }
+
+    // Adiciona o event listener ao document para fechar o menu ao clicar fora
+    document.addEventListener("click", handleClickOutside);
+    // No retorno, removemos o event listener para evitar múltiplos listeners e vazamentos de memória.
+    // Isso garante que o listener só está ativo enquanto o componente está montado.
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
@@ -59,7 +78,9 @@ export function AppHeader() {
             </span>
           </Link>
 
-          <details className="relative lg:hidden">
+          <GitHubStarsBadge stars={stars}/>
+
+          <details ref={menuRef} className="relative lg:hidden">
             <summary
               aria-label="Abrir menu"
               className="flex size-10 cursor-pointer list-none items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground [&::-webkit-details-marker]:hidden"
