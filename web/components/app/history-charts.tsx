@@ -49,7 +49,7 @@ export function RevenueByAnalysisChart({ analyses }: { analyses: Analysis[] }) {
             tick={{ fontSize: 11 }}
           />
           <Tooltip
-            formatter={(v: number) => fmtKz(v)}
+            formatter={(value) => fmtKz(Number(value))}
             contentStyle={{ fontSize: 12, borderRadius: 8 }}
           />
           <Bar

@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FileUp } from "lucide-react";
-import { Suspense, useEffect, useRef } from "react";
-import { Github } from "@hugeicons/core-free-icons";
+import { useEffect, useRef } from "react";
 import { GitHubStarsBadge } from "../site/github-stars";
 
 const links: { href: string; label: string; also?: string[] }[] = [
@@ -12,7 +11,7 @@ const links: { href: string; label: string; also?: string[] }[] = [
   { href: "/history", label: "Histórico" },
 ];
 
-export function AppHeader({ stars }: { stars: number}) {
+export function AppHeader({ stars }: { stars: number }) {
   const pathname = usePathname();
 
   const menuRef = useRef<HTMLDetailsElement>(null);
@@ -24,10 +23,7 @@ export function AppHeader({ stars }: { stars: number}) {
       }
     }
 
-    // Adiciona o event listener ao document para fechar o menu ao clicar fora
     document.addEventListener("click", handleClickOutside);
-    // No retorno, removemos o event listener para evitar múltiplos listeners e vazamentos de memória.
-    // Isso garante que o listener só está ativo enquanto o componente está montado.
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
@@ -53,6 +49,7 @@ export function AppHeader({ stars }: { stars: number}) {
                 <Link
                   key={href}
                   href={href}
+                  onClick={() => menuRef.current?.removeAttribute("open")}
                   aria-current={active ? "page" : undefined}
                   className={`rounded-full px-4 py-2 transition-colors ${
                     active
@@ -78,7 +75,7 @@ export function AppHeader({ stars }: { stars: number}) {
             </span>
           </Link>
 
-          <GitHubStarsBadge stars={stars}/>
+          <GitHubStarsBadge stars={stars} />
 
           <details ref={menuRef} className="relative lg:hidden">
             <summary
