@@ -1,3 +1,6 @@
+
+![Descrição da imagem](docs/img.png)
+
 # DataLens
 
 **DataLens** is a sales CSV file analyzer. Upload a file, validate its data, and view a summary with key metrics, revenue by category, and the best-selling products. Each analysis is stored and available in the analysis history.
